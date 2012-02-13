@@ -13,13 +13,13 @@
   */
 
 if(!isset($container)){
+	require_once __DIR__ . '/../../../libs/Nette/loader.php';
 	require_once __DIR__ . '/../../../libs/Venne/loader.php';
-	$venne = new \Venne\Loader(__DIR__ . "/../../../");
-	$container = $venne->getContainer();
 
-	\Nette\Diagnostics\Debugger::$strictMode = false;
-	\Nette\Diagnostics\Debugger::$productionMode = true;
-	
+	$configurator = new \Venne\Config\Configurator(array("wwwDir"=>realpath(__DIR__ . "/../../")));
+	$configurator->enableLoader();
+	$container = $configurator->getContainer();
+
 	if(!$container->user->isAllowed("KcfinderModule\\AdminModule\\DefaultPresenter")){
 		throw new \Nette\Application\ForbiddenRequestException;
 	}
